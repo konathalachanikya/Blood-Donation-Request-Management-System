@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block title %}Manage Donors | Admin{% endblock %}
+
+{% block content %}
+<h2 class="fw-bold mb-3">All Donors</h2>
+
+<div class="card shadow-sm border-0 rounded-4">
+  <div class="card-body">
+    <table class="table table-striped align-middle">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Blood Group</th>
+          <th>Phone</th>
+          <th>City</th>
+          <th>Pincode</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for d in donors %}
+        <tr>
+          <td>{{ d.user.name }}</td>
+          <td>{{ d.user.email }}</td>
+          <td><span class="badge bg-danger">{{ d.blood_group }}</span></td>
+          <td>{{ d.phone }}</td>
+          <td>{{ d.city }}</td>
+          <td>{{ d.pincode }}</td>
+          <td>
+            {% if d.availability %}
+              <span class="badge bg-success">Active</span>
+            {% else %}
+              <span class="badge bg-secondary">Inactive</span>
+            {% endif %}
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

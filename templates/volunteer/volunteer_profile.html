@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block title %}Volunteer Profile{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-7">
+    <div class="card shadow-lg border-0 rounded-4">
+      <div class="card-body p-4">
+        <h3 class="fw-bold mb-3">Volunteer Profile</h3>
+
+        <form method="POST">
+          <div class="mb-3">
+            <label class="form-label">Phone</label>
+            <input type="text" name="phone" class="form-control" value="{{ volunteer.phone if volunteer else '' }}" required>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">City</label>
+            <input type="text" name="city" class="form-control" value="{{ volunteer.city if volunteer else '' }}" required>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Status</label>
+            <select name="status" class="form-select" required>
+              <option value="Active" {% if volunteer and volunteer.status=="Active" %}selected{% endif %}>Active</option>
+              <option value="Inactive" {% if volunteer and volunteer.status=="Inactive" %}selected{% endif %}>Inactive</option>
+            </select>
+          </div>
+
+          <button class="btn btn-danger w-100 py-2 fw-semibold">Save Profile</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

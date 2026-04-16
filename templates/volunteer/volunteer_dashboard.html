@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}Volunteer Dashboard{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <div>
+    <h2 class="fw-bold">Volunteer Dashboard</h2>
+    <p class="text-muted mb-0">Manage your details and assigned tasks.</p>
+  </div>
+
+  <div class="d-flex gap-2">
+    <a href="{{ url_for('volunteer_profile') }}" class="btn btn-danger">
+      Update Profile
+    </a>
+    <a href="{{ url_for('volunteer_tasks') }}" class="btn btn-dark">
+      View Tasks
+    </a>
+  </div>
+</div>
+{% endblock %}

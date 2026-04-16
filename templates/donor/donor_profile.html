@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block title %}Donor Profile{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-7">
+    <div class="card shadow-lg border-0 rounded-4">
+      <div class="card-body p-4">
+        <h3 class="fw-bold mb-3">Donor Profile</h3>
+
+        <form method="POST">
+          <div class="mb-3">
+            <label class="form-label">Blood Group</label>
+            <select name="blood_group" class="form-select" required>
+              <option value="">-- Select Blood Group --</option>
+              {% for bg in ["A+","A-","B+","B-","AB+","AB-","O+","O-"] %}
+                <option value="{{ bg }}" {% if donor and donor.blood_group==bg %}selected{% endif %}>{{ bg }}</option>
+              {% endfor %}
+            </select>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Phone</label>
+            <input type="text" name="phone" class="form-control" value="{{ donor.phone if donor else '' }}" required>
+          </div>
+
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label class="form-label">City</label>
+              <input type="text" name="city" class="form-control" value="{{ donor.city if donor else '' }}" required>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Pincode</label>
+              <input type="text" name="pincode" class="form-control" value="{{ donor.pincode if donor else '' }}" required>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Availability</label>
+            <select name="availability" class="form-select" required>
+              <option value="Active" {% if donor and donor.availability %}selected{% endif %}>Active</option>
+              <option value="Inactive" {% if donor and not donor.availability %}selected{% endif %}>Inactive</option>
+            </select>
+          </div>
+
+          <button class="btn btn-danger w-100 py-2 fw-semibold">Save Profile</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}Requester Dashboard{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <div>
+    <h2 class="fw-bold">Requester Dashboard</h2>
+    <p class="text-muted mb-0">Submit blood requests and track status.</p>
+  </div>
+
+  <div class="d-flex gap-2">
+    <a href="{{ url_for('new_request') }}" class="btn btn-danger">
+      New Request
+    </a>
+
+    <a href="{{ url_for('requester_my_requests') }}" class="btn btn-dark">
+      My Requests
+    </a>
+  </div>
+</div>
+{% endblock %}

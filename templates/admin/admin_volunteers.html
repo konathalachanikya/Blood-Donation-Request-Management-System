@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %}Manage Volunteers | Admin{% endblock %}
+
+{% block content %}
+<h2 class="fw-bold mb-3">All Volunteers</h2>
+
+<div class="card shadow-sm border-0 rounded-4">
+  <div class="card-body">
+    <table class="table table-striped align-middle">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Phone</th>
+          <th>City</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for v in volunteers %}
+        <tr>
+          <td>{{ v.user.name }}</td>
+          <td>{{ v.user.email }}</td>
+          <td>{{ v.phone }}</td>
+          <td>{{ v.city }}</td>
+          <td>
+            {% if v.status == "Active" %}
+              <span class="badge bg-success">Active</span>
+            {% else %}
+              <span class="badge bg-secondary">Inactive</span>
+            {% endif %}
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

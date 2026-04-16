@@ -1,0 +1,119 @@
+{% extends "base.html" %}
+{% block title %}Request Details | Admin{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <div>
+    <h2 class="fw-bold">Request #{{ req.request_id }}</h2>
+    <p class="text-muted mb-0">Patient: {{ req.patient_name }} | Contact: {{ req.contact_number }}</p>
+  </div>
+
+  <div>
+    {% if req.status != "Approved" %}
+      <a href="{{ url_for('approve_request', request_id=req.request_id) }}"
+         class="btn btn-success">
+        Approve Request
+      </a>
+    {% else %}
+      <span class="badge bg-success p-2">Approved</span>
+    {% endif %}
+  </div>
+</div>
+
+<div class="row g-3">
+  <div class="col-md-4">
+    <div class="card shadow-sm border-0 rounded-4">
+      <div class="card-body">
+        <h5 class="fw-bold">Request Info</h5>
+        <p><b>Blood Group:</b> <span class="badge bg-danger">{{ req.blood_group_needed }}</span></p>
+        <p><b>City:</b> {{ req.city }}</p>
+        <p><b>Pincode:</b> {{ req.pincode }}</p>
+        <p><b>Status:</b> <span class="badge bg-dark">{{ req.status }}</span></p>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-8">
+    <div class="card shadow-sm border-0 rounded-4">
+      <div class="card-body">
+        <h5 class="fw-bold mb-3">Matched Donors (Compatibility + Location)</h5>
+
+        {% if matched_donors %}
+          <table class="table table-striped align-middle">
+            <thead>
+              <tr>
+                <th>Donor Name</th>
+                <th>Blood Group</th>
+                <th>Phone</th>
+                <th>City</th>
+                <th>Pincode</th>
+                <th>Availability</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for d in matched_donors %}
+              <tr>
+                <td>{{ d.user.name }}</td>
+                <td><span class="badge bg-danger">{{ d.blood_group }}</span></td>
+                <td>{{ d.phone }}</td>
+                <td>{{ d.city }}</td>
+                <td>{{ d.pincode }}</td>
+                <td>
+                  {% if d.availability %}
+                    <span class="badge bg-success">Active</span>
+                  {% else %}
+                    <span class="badge bg-secondary">Inactive</span>
+                  {% endif %}
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        {% else %}
+          <div class="alert alert-warning">
+            No matching donors found for this request.
+          </div>
+        {% endif %}
+
+        <!-- ✅ DEBUG: check volunteer list -->
+        <p class="text-muted mt-3">
+          Active Volunteers Found: <b>{{ volunteers|length }}</b>
+        </p>
+
+        <!-- ✅ STEP 6.3: Volunteer Assign UI -->
+        <hr class="my-4">
+
+        <h5 class="fw-bold">Assign Volunteer</h5>
+
+        {% if volunteers %}
+          <form method="POST" action="{{ url_for('assign_volunteer', request_id=req.request_id) }}">
+            <div class="row g-2">
+              <div class="col-md-8">
+                <select name="volunteer_id" class="form-select" required>
+                  <option value="">-- Select Active Volunteer --</option>
+                  {% for v in volunteers %}
+                    <option value="{{ v.volunteer_id }}">
+                      {{ v.user.name }} ({{ v.city }}) - {{ v.status }}
+                    </option>
+                  {% endfor %}
+                </select>
+              </div>
+
+              <div class="col-md-4">
+                <button class="btn btn-danger w-100">Assign</button>
+              </div>
+            </div>
+          </form>
+        {% else %}
+          <div class="alert alert-danger mt-2">
+            No Active Volunteers Found. Please register a volunteer and set status = <b>Active</b>.
+          </div>
+        {% endif %}
+        <!-- ✅ End Volunteer Assign UI -->
+
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,151 @@
+{% extends "base.html" %}
+{% block title %}Admin Dashboard{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <div>
+    <h2 class="fw-bold">Admin Dashboard</h2>
+    <p class="text-muted mb-0">Monitor donors, volunteers, and blood requests.</p>
+  </div>
+
+  <div class="d-flex gap-2">
+    <a href="{{ url_for('admin_requests') }}" class="btn btn-danger">
+      Manage Requests
+    </a>
+
+    <a href="{{ url_for('admin_donors') }}" class="btn btn-dark">
+      Manage Donors
+    </a>
+
+    <a href="{{ url_for('admin_volunteers') }}" class="btn btn-secondary">
+      Manage Volunteers
+    </a>
+  </div>
+</div>
+
+<!-- Stats Cards -->
+<div class="row g-3 mb-4">
+  <div class="col-md-3">
+    <div class="card shadow-sm border-0 rounded-4">
+      <div class="card-body text-center">
+        <h6 class="text-muted">Total Users</h6>
+        <h2 class="fw-bold">{{ total_users }}</h2>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-3">
+    <div class="card shadow-sm border-0 rounded-4">
+      <div class="card-body text-center">
+        <h6 class="text-muted">Total Donors</h6>
+        <h2 class="fw-bold text-danger">{{ total_donors }}</h2>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-3">
+    <div class="card shadow-sm border-0 rounded-4">
+      <div class="card-body text-center">
+        <h6 class="text-muted">Total Volunteers</h6>
+        <h2 class="fw-bold">{{ total_volunteers }}</h2>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-3">
+    <div class="card shadow-sm border-0 rounded-4">
+      <div class="card-body text-center">
+        <h6 class="text-muted">Total Requests</h6>
+        <h2 class="fw-bold">{{ total_requests }}</h2>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Request Status Cards -->
+<div class="row g-3 mb-4">
+  <div class="col-md-3">
+    <div class="card shadow-sm border-0 rounded-4">
+      <div class="card-body text-center">
+        <h6 class="text-muted">Pending</h6>
+        <h2 class="fw-bold text-warning">{{ pending_requests }}</h2>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-3">
+    <div class="card shadow-sm border-0 rounded-4">
+      <div class="card-body text-center">
+        <h6 class="text-muted">Approved</h6>
+        <h2 class="fw-bold text-success">{{ approved_requests }}</h2>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-3">
+    <div class="card shadow-sm border-0 rounded-4">
+      <div class="card-body text-center">
+        <h6 class="text-muted">Waiting</h6>
+        <h2 class="fw-bold text-primary">{{ waiting_requests }}</h2>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-3">
+    <div class="card shadow-sm border-0 rounded-4">
+      <div class="card-body text-center">
+        <h6 class="text-muted">Completed</h6>
+        <h2 class="fw-bold text-dark">{{ completed_requests }}</h2>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Recent Requests Table -->
+<div class="card shadow-sm border-0 rounded-4">
+  <div class="card-body">
+    <h5 class="fw-bold mb-3">Recent Requests</h5>
+
+    {% if recent_requests %}
+      <div class="table-responsive">
+        <table class="table table-striped align-middle">
+          <thead>
+            <tr>
+              <th>Request ID</th>
+              <th>Patient</th>
+              <th>Blood Group</th>
+              <th>City</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for r in recent_requests %}
+            <tr>
+              <td>#{{ r.request_id }}</td>
+              <td>{{ r.patient_name }}</td>
+              <td><span class="badge bg-danger">{{ r.blood_group_needed }}</span></td>
+              <td>{{ r.city }}</td>
+              <td>
+                <span class="badge bg-dark">{{ r.status }}</span>
+              </td>
+              <td>
+                <a href="{{ url_for('admin_request_details', request_id=r.request_id) }}"
+                   class="btn btn-sm btn-outline-danger">
+                  View
+                </a>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    {% else %}
+      <div class="alert alert-info">
+        No requests found yet.
+      </div>
+    {% endif %}
+  </div>
+</div>
+
+{% endblock %}
